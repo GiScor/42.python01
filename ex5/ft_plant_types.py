@@ -1,6 +1,6 @@
 class Plant:
-    def __init__(self, name, height, d_old, factor):
-        self._name = name
+    def __init__(self, name: str, height: float, d_old: int, factor: float):
+        self._name = "\033[0;32m" + name + "\033[0m"
         self._factor = factor
         if height < 0:
             print('\033[91m' + "============ERROR============\n",
@@ -77,7 +77,9 @@ class Flower(Plant):
     allowed_colors = ["red", "blue", "green", "yellow",
                       "orange", "purple", "pink", "brown",
                       "black", "white", "gray"]
+
     def __init__(self, name, height, d_old, factor, color):
+        self._bloomed = False
         if color not in self.allowed_colors:
             print('\033[91m' + "============ERROR============\n",
                   "Invalid color: " + '\033[0m' + "<", color, ">" + '\033[91m',
@@ -90,8 +92,12 @@ class Flower(Plant):
         super().__init__(name, height, d_old, factor)
 
     def show(self):
-        super().show(end=", ")
-        print(self._color)
+        super().show()
+        print(f" Color: {self._color}")
+        if self._bloomed:
+            print(f" {self._name} is blooming!")
+        else:
+            print(f" {self._name} has not bloomed yet.")
 
     def set_color(self, color):
         if color not in self.allowed_colors:
@@ -106,42 +112,98 @@ class Flower(Plant):
         else:
             self._color = color
             print(self._name, ": ", "Color updated: ",
-                  self._color, " days", sep="")
+                  self._color, sep="")
+
+    def bloom(self):
+        if not self._bloomed:
+            print(f"[asking {self._name} to bloom]")
+            self._bloomed = True
+        else:
+            print("Already blooming!")
 
 
-class Colors:
-    """ ANSI color codes """
-    BLACK = "\033[0;30m"
-    RED = "\033[0;31m"
-    GREEN = "\033[0;32m"
-    BROWN = "\033[0;33m"
-    BLUE = "\033[0;34m"
-    PURPLE = "\033[0;35m"
-    CYAN = "\033[0;36m"
-    LIGHT_GRAY = "\033[0;37m"
-    DARK_GRAY = "\033[1;30m"
-    LIGHT_RED = "\033[1;31m"
-    LIGHT_GREEN = "\033[1;32m"
-    YELLOW = "\033[1;33m"
-    LIGHT_BLUE = "\033[1;34m"
-    LIGHT_PURPLE = "\033[1;35m"
-    LIGHT_CYAN = "\033[1;36m"
-    LIGHT_WHITE = "\033[1;37m"
-    BOLD = "\033[1m"
-    FAINT = "\033[2m"
-    ITALIC = "\033[3m"
-    UNDERLINE = "\033[4m"
-    BLINK = "\033[5m"
-    NEGATIVE = "\033[7m"
-    CROSSED = "\033[9m"
-    END = "\033[0m"
+class Tree(Plant):
+    def __init__(self, name, height, d_old, factor, trunk_diameter):
+        self._diameter = trunk_diameter
+        self._shading = False
+        super().__init__(name, height, d_old, factor)
+
+    def show(self):
+        super().show(end=", ")
+        print(f"{self._diameter}cm trunk")
+
+    def produce_shade(self):
+        if self._shading:
+            print("Already producing shade, bruh!")
+        else:
+            print(f"[asking {self._name} to produce shade]")
+            self._shading = True
+            print(f"{self._name} is now producing a shade {self._height}cm"
+                  f" long and {self._diameter}cm wide")
+
+
+class Vegetable(Plant):
+    def __init__(self, name, height, d_old, factor,
+                 harvest_season, nutritional_value):
+        self._harvest_season = harvest_season
+        self._nutritional_value = nutritional_value
+        super().__init__(name, height, d_old, factor)
+
+    def show(self):
+        super().show()
+        print(f" Harvest season: {self._harvest_season}")
+        print(f" Nutritional value: {self._nutritional_value}")
+
+    def grow(self):
+        super().grow()
+        self._nutritional_value += 1
+
+# class Colors:
+    # """ ANSI color codes """
+    # BLACK = "\033[0;30m"
+    # RED = "\033[0;31m"
+    # GREEN = "\033[0;32m"
+    # BROWN = "\033[0;33m"
+    # BLUE = "\033[0;34m"
+    # PURPLE = "\033[0;35m"
+    # CYAN = "\033[0;36m"
+    # LIGHT_GRAY = "\033[0;37m"
+    # DARK_GRAY = "\033[1;30m"
+    # LIGHT_RED = "\033[1;31m"
+    # LIGHT_GREEN = "\033[1;32m"
+    # YELLOW = "\033[1;33m"
+    # LIGHT_BLUE = "\033[1;34m"
+    # LIGHT_PURPLE = "\033[1;35m"
+    # LIGHT_CYAN = "\033[1;36m"
+    # LIGHT_WHITE = "\033[1;37m"
+    # BOLD = "\033[1m"
+    # FAINT = "\033[2m"
+    # ITALIC = "\033[3m"
+    # UNDERLINE = "\033[4m"
+    # BLINK = "\033[5m"
+    # NEGATIVE = "\033[7m"
+    # CROSSED = "\033[9m"
+    # END = "\033[0m"
 
 
 def ft_plant_types():
-    a = Flower("fiorellino", 10, 10, 0.01, "cacca")
+    print("=== Garden Plant Types ===")
+    print("=== Flower")
+    a = Flower("Fiorellino", 10.0, 10, 0.01, "cacca")
     a.set_height(11)
     a.set_color("sborra")
+    a.set_color("blue")
+    a.bloom()
     a.show()
+    print("=== Tree")
+    b = Tree("Bruntallo", 300.0, 493, 0.1, 150.0)
+    b.show()
+    b.produce_shade()
+    print("=== Vegetable")
+    c = Vegetable("Groccolo", 8.0, 21, 0.1, "October", 0)
+    print(f"[Make {c._name} grow for 20 days]")
+    c.age(20)
+    c.show()
 
 
 if __name__ == "__main__":

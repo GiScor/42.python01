@@ -14,7 +14,7 @@ def ft_garden_data():
     coprino.show()
     sblurbo = Plant('Sblurbo', 0.67, 1542)
     sblurbo.show()
-    cactus = Plant('Metacactus', 142, '∞')
+    cactus = Plant('Metacactus', 142, 9999999999999999999999)
     cactus.show()
 
 
