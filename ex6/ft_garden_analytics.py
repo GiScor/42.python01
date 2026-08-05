@@ -81,9 +81,9 @@ class Plant:
     directly when you do not yet have all the information,
     WTF?????????
     '''
-    @staticmethod
-    def anonym():
-        self.__init__("anonymous", 1, 1, 0.01)
+    @classmethod
+    def anonym(cls):
+        return cls("Unknown", 1, 1, .1)
 
     @staticmethod
     def year_old(days):
